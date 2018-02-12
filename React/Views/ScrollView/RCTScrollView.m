@@ -159,6 +159,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
 #if !TARGET_OS_TV
 @property (nonatomic, strong) RCTRefreshControl *rctRefreshControl;
 @property (nonatomic, assign) BOOL pinchGestureEnabled;
+@property(nonatomic, strong) YiRefreshHeader *refreshHeader;
 #endif
 
 @end
@@ -177,6 +178,23 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
       // scrollbar flip because we also flip it with whole `UIScrollView` flip.
       self.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
     }
+    //    self.refreshHeader=[[YiRefreshHeader alloc] init];
+    //    self.refreshHeader.scrollView=self;
+    //    [self.refreshHeader header];
+    //
+    //    typeof(self) __weak weakSelf = self;
+    //
+    //    self.refreshHeader.beginRefreshingBlock=^(){
+    //      // 后台执行：
+    //      dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    //        sleep(2);
+    //        dispatch_async(dispatch_get_main_queue(), ^{
+    //          typeof(weakSelf) __strong strongSelf = weakSelf;
+    //          // 主线程刷新视图
+    //          [strongSelf.refreshHeader endRefreshing];
+    //        });
+    //      });
+    //    };
 
     #if !TARGET_OS_TV
     _pinchGestureEnabled = YES;

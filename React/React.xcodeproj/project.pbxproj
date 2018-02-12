@@ -1198,6 +1198,10 @@
 		CF2731C11E7B8DE40044CA4F /* RCTDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2731BF1E7B8DE40044CA4F /* RCTDeviceInfo.m */; };
 		CF2731C21E7B8DEF0044CA4F /* RCTDeviceInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = CF2731BE1E7B8DE40044CA4F /* RCTDeviceInfo.h */; };
 		CF2731C31E7B8DF30044CA4F /* RCTDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CF2731BF1E7B8DE40044CA4F /* RCTDeviceInfo.m */; };
+		DDA02DC620319C12000E9F4C /* YiRefreshFooter.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA02DC220319C12000E9F4C /* YiRefreshFooter.h */; };
+		DDA02DC720319C12000E9F4C /* YiRefreshFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA02DC320319C12000E9F4C /* YiRefreshFooter.m */; };
+		DDA02DC820319C12000E9F4C /* YiRefreshHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = DDA02DC420319C12000E9F4C /* YiRefreshHeader.h */; };
+		DDA02DC920319C12000E9F4C /* YiRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA02DC520319C12000E9F4C /* YiRefreshHeader.m */; };
 		E9B20B7B1B500126007A2DA7 /* RCTAccessibilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B20B7A1B500126007A2DA7 /* RCTAccessibilityManager.m */; };
 		EBF21BBC1FC498270052F4D5 /* InspectorInterfaces.h in Headers */ = {isa = PBXBuildFile; fileRef = EBF21BBA1FC498270052F4D5 /* InspectorInterfaces.h */; };
 		EBF21BBD1FC498270052F4D5 /* InspectorInterfaces.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EBF21BBB1FC498270052F4D5 /* InspectorInterfaces.cpp */; };
@@ -2278,6 +2282,11 @@
 		C6D380191F71D75B00621378 /* RAMBundleRegistry.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RAMBundleRegistry.cpp; sourceTree = "<group>"; };
 		CF2731BE1E7B8DE40044CA4F /* RCTDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTDeviceInfo.h; sourceTree = "<group>"; };
 		CF2731BF1E7B8DE40044CA4F /* RCTDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTDeviceInfo.m; sourceTree = "<group>"; };
+		DDA02DC120319C12000E9F4C /* down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down@2x.png"; sourceTree = "<group>"; };
+		DDA02DC220319C12000E9F4C /* YiRefreshFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YiRefreshFooter.h; sourceTree = "<group>"; };
+		DDA02DC320319C12000E9F4C /* YiRefreshFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YiRefreshFooter.m; sourceTree = "<group>"; };
+		DDA02DC420319C12000E9F4C /* YiRefreshHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YiRefreshHeader.h; sourceTree = "<group>"; };
+		DDA02DC520319C12000E9F4C /* YiRefreshHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YiRefreshHeader.m; sourceTree = "<group>"; };
 		E3BBC8EB1ADE6F47001BBD81 /* RCTTextDecorationLineType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTTextDecorationLineType.h; sourceTree = "<group>"; };
 		E9B20B791B500126007A2DA7 /* RCTAccessibilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTAccessibilityManager.h; sourceTree = "<group>"; };
 		E9B20B7A1B500126007A2DA7 /* RCTAccessibilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTAccessibilityManager.m; sourceTree = "<group>"; };
@@ -2890,6 +2899,7 @@
 		83CBBA2F1A601D0F00E9B192 /* React */ = {
 			isa = PBXGroup;
 			children = (
+				DDA02DC020319C12000E9F4C /* YiRefresh */,
 				83CBBA491A601E3B00E9B192 /* Base */,
 				13134C721E296B2A00B9F3CB /* CxxBridge */,
 				13134C7D1E296B2A00B9F3CB /* CxxModule */,
@@ -3047,6 +3057,18 @@
 				3D92B0D51E03699D0018521A /* SystraceSection.h */,
 			);
 			path = cxxreact;
+			sourceTree = "<group>";
+		};
+		DDA02DC020319C12000E9F4C /* YiRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				DDA02DC120319C12000E9F4C /* down@2x.png */,
+				DDA02DC220319C12000E9F4C /* YiRefreshFooter.h */,
+				DDA02DC320319C12000E9F4C /* YiRefreshFooter.m */,
+				DDA02DC420319C12000E9F4C /* YiRefreshHeader.h */,
+				DDA02DC520319C12000E9F4C /* YiRefreshHeader.m */,
+			);
+			path = YiRefresh;
 			sourceTree = "<group>";
 		};
 		EBF21BB91FC497DA0052F4D5 /* jsinspector */ = {
@@ -3478,6 +3500,7 @@
 				3D80DA3F1DF820620028D040 /* RCTRootViewInternal.h in Headers */,
 				3D80DA401DF820620028D040 /* RCTTouchEvent.h in Headers */,
 				3D80DA411DF820620028D040 /* RCTTouchHandler.h in Headers */,
+				DDA02DC620319C12000E9F4C /* YiRefreshFooter.h in Headers */,
 				59E604A61FE9CCE300BD90C5 /* RCTScrollContentViewManager.h in Headers */,
 				13134C8C1E296B2A00B9F3CB /* RCTMessageThread.h in Headers */,
 				59EB6DBB1EBD6FC90072A5E7 /* RCTUIManagerObserverCoordinator.h in Headers */,
@@ -3530,6 +3553,7 @@
 				3D80DA651DF820620028D040 /* RCTComponent.h in Headers */,
 				3D80DA661DF820620028D040 /* RCTComponentData.h in Headers */,
 				3DA9819E1E5B0DBB004F2374 /* NSDataBigString.h in Headers */,
+				DDA02DC820319C12000E9F4C /* YiRefreshHeader.h in Headers */,
 				59D031F11F8353D3008361F0 /* RCTSafeAreaView.h in Headers */,
 				3D80DA671DF820620028D040 /* RCTConvert+CoreLocation.h in Headers */,
 				66CD94B11F1045E700CB3C7C /* RCTMaskedView.h in Headers */,
@@ -4433,6 +4457,7 @@
 				599FAA381FB274980058CCF6 /* RCTSurface.mm in Sources */,
 				59D031EF1F8353D3008361F0 /* RCTSafeAreaShadowView.m in Sources */,
 				3D1E68DB1CABD13900DD7465 /* RCTDisplayLink.m in Sources */,
+				DDA02DC720319C12000E9F4C /* YiRefreshFooter.m in Sources */,
 				14F3620E1AABD06A001CE568 /* RCTSwitchManager.m in Sources */,
 				13B080201A69489C00A75B9A /* RCTActivityIndicatorViewManager.m in Sources */,
 				13E067561A70F44B002CDEE1 /* RCTViewManager.m in Sources */,
@@ -4487,6 +4512,7 @@
 				59EDBCAF1FDF4E0C003573DE /* RCTScrollContentView.m in Sources */,
 				13D9FEEE1CDCD93000158BD7 /* RCTKeyboardObserver.m in Sources */,
 				135A9C001E7B0EE600587AEB /* RCTJSCHelpers.mm in Sources */,
+				DDA02DC920319C12000E9F4C /* YiRefreshHeader.m in Sources */,
 				B233E6EA1D2D845D00BC68BA /* RCTI18nManager.m in Sources */,
 				3D7BFD1F1EA8E351008DFB7A /* RCTPackagerConnection.mm in Sources */,
 				13456E931ADAD2DE009F94A7 /* RCTConvert+CoreLocation.m in Sources */,

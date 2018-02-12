@@ -13,6 +13,7 @@
 #import <React/RCTEventDispatcher.h>
 #import <React/RCTScrollableProtocol.h>
 #import <React/RCTView.h>
+#import "YiRefreshHeader.h"
 
 @protocol UIScrollViewDelegate;
 
