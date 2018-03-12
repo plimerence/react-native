@@ -15,6 +15,7 @@
 #import <React/RCTView.h>
 #import "YiRefreshHeader.h"
 
+
 @protocol UIScrollViewDelegate;
 
 @interface RCTScrollView : RCTView <UIScrollViewDelegate, RCTScrollableProtocol, RCTAutoInsetsProtocol>
@@ -46,7 +47,6 @@
 @property (nonatomic, assign) BOOL DEPRECATED_sendUpdatedChildFrames;
 @property (nonatomic, assign) NSTimeInterval scrollEventThrottle;
 @property (nonatomic, assign) BOOL centerContent;
-@property (nonatomic, copy) NSDictionary *maintainVisibleContentPosition;
 @property (nonatomic, assign) int snapToInterval;
 @property (nonatomic, copy) NSString *snapToAlignment;
 

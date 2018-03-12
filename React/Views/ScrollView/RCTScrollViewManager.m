@@ -62,7 +62,6 @@ RCT_EXPORT_VIEW_PROPERTY(bounces, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(bouncesZoom, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(canCancelContentTouches, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(centerContent, BOOL)
-RCT_EXPORT_VIEW_PROPERTY(maintainVisibleContentPosition, NSDictionary)
 RCT_EXPORT_VIEW_PROPERTY(automaticallyAdjustContentInsets, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(decelerationRate, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(directionalLockEnabled, BOOL)
@@ -77,6 +76,9 @@ RCT_REMAP_VIEW_PROPERTY(pinchGestureEnabled, scrollView.pinchGestureEnabled, BOO
 RCT_EXPORT_VIEW_PROPERTY(scrollsToTop, BOOL)
 #endif
 RCT_EXPORT_VIEW_PROPERTY(showsHorizontalScrollIndicator, BOOL)
+
+RCT_EXPORT_VIEW_PROPERTY(isPullToRefreshEnd, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(activeRefresh, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(showsVerticalScrollIndicator, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(scrollEventThrottle, NSTimeInterval)
 RCT_EXPORT_VIEW_PROPERTY(zoomScale, CGFloat)

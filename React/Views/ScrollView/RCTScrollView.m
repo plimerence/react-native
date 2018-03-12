@@ -15,11 +15,10 @@
 #import "RCTEventDispatcher.h"
 #import "RCTLog.h"
 #import "RCTUIManager.h"
-#import "RCTUIManagerObserverCoordinator.h"
-#import "RCTUIManagerUtils.h"
 #import "RCTUtils.h"
 #import "UIView+Private.h"
 #import "UIView+React.h"
+#import "ZZHScrollViewMes.h"
 
 #if !TARGET_OS_TV
 #import "RCTRefreshControl.h"
@@ -171,6 +170,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
 {
   if ((self = [super initWithFrame:frame])) {
     [self.panGestureRecognizer addTarget:self action:@selector(handleCustomPan:)];
+  
 
     if ([self respondsToSelector:@selector(setSemanticContentAttribute:)]) {
       // We intentionaly force `UIScrollView`s `semanticContentAttribute` to `LTR` here
@@ -178,24 +178,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
       // scrollbar flip because we also flip it with whole `UIScrollView` flip.
       self.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
     }
-    //    self.refreshHeader=[[YiRefreshHeader alloc] init];
-    //    self.refreshHeader.scrollView=self;
-    //    [self.refreshHeader header];
-    //
-    //    typeof(self) __weak weakSelf = self;
-    //
-    //    self.refreshHeader.beginRefreshingBlock=^(){
-    //      // 后台执行：
-    //      dispatch_async(dispatch_get_global_queue(0, 0), ^{
-    //        sleep(2);
-    //        dispatch_async(dispatch_get_main_queue(), ^{
-    //          typeof(weakSelf) __strong strongSelf = weakSelf;
-    //          // 主线程刷新视图
-    //          [strongSelf.refreshHeader endRefreshing];
-    //        });
-    //      });
-    //    };
-
     #if !TARGET_OS_TV
     _pinchGestureEnabled = YES;
     #endif
@@ -293,7 +275,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
  * Note: Explicitly returning `YES`, instead of relying on the default fixes
  * (at least) one bug where if you have a UIControl inside a UIScrollView and
  * tap on the UIControl and then start dragging (to scroll), it won't scroll.
- * Chat with @andras for more details.
+ * Chat with andras for more details.
  *
  * In order to have this called, you must have delaysContentTouches set to NO
  * (which is the not the `UIKit` default).
@@ -335,7 +317,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
 
   UIEdgeInsets contentInset = self.contentInset;
   CGSize contentSize = self.contentSize;
-
+  
   // If contentSize has not been measured yet we can't check bounds.
   if (CGSizeEqualToSize(contentSize, CGSizeZero)) {
     self.contentOffset = originalOffset;
@@ -351,11 +333,29 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
 #if !TARGET_OS_TV
 - (void)setRctRefreshControl:(RCTRefreshControl *)refreshControl
 {
-  if (_rctRefreshControl) {
-    [_rctRefreshControl removeFromSuperview];
-  }
-  _rctRefreshControl = refreshControl;
-  [self addSubview:_rctRefreshControl];
+  // YiRefreshHeader  头部刷新按钮的使用
+//  self.refreshHeader=[[YiRefreshHeader alloc] init];
+//  self.refreshHeader.scrollView=self;
+//  [self.refreshHeader header];
+//
+//  typeof(self) __weak weakSelf = self;
+//
+//  self.refreshHeader.beginRefreshingBlock=^(){
+//    // 后台执行：
+//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//      sleep(2);
+//      dispatch_async(dispatch_get_main_queue(), ^{
+//        typeof(weakSelf) __strong strongSelf = weakSelf;
+//        // 主线程刷新视图
+//        [strongSelf.refreshHeader endRefreshing];
+//      });
+//    });
+//  };
+//  if (_rctRefreshControl) {
+//    [_rctRefreshControl removeFromSuperview];
+//  }
+//  _rctRefreshControl = refreshControl;
+//  [self addSubview:_rctRefreshControl];
 }
 
 - (void)setPinchGestureEnabled:(BOOL)pinchGestureEnabled
@@ -375,15 +375,17 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
 
 @end
 
-@interface RCTScrollView () <RCTUIManagerObserver>
-
+@interface RCTScrollView()
+@property(nonatomic, strong) YiRefreshHeader *refreshHeader;
+#pragma mark --
+#pragma mark -- Custom iOS pull Refresh
+/// 下拉刷新的开关
+@property (nonatomic, assign) BOOL isPullToRefreshEnd;
 @end
 
 @implementation RCTScrollView
 {
   RCTEventDispatcher *_eventDispatcher;
-  CGRect _prevFirstVisibleFrame;
-  __weak UIView *_firstVisibleView;
   RCTCustomScrollView *_scrollView;
   UIView *_contentView;
   NSTimeInterval _lastScrollDispatchTime;
@@ -426,18 +428,42 @@ RCT_NOT_IMPLEMENTED(- (instancetype)init)
     _scrollEventThrottle = 0.0;
     _lastScrollDispatchTime = 0;
     _cachedChildFrames = [NSMutableArray new];
-
     _scrollListeners = [NSHashTable weakObjectsHashTable];
+      self.refreshHeader=[[YiRefreshHeader alloc] init];
+      self.refreshHeader.scrollView=_scrollView;
+      [self.refreshHeader header];
+    
+      //typeof(self) __weak weakSelf = self;
+    
+      self.refreshHeader.beginRefreshingBlock=^(){
+        [[ZZHScrollViewMes allocWithZone:nil] isRefreshing:@"refreshing"];
+        // 后台执行：
+//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//        });
+      };
 
     [self addSubview:_scrollView];
   }
   return self;
 }
 
+- (void)setIsPullToRefreshEnd:(BOOL)isPullToRefreshEnd{
+  if (isPullToRefreshEnd) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self.refreshHeader endRefreshing];});
+  }
+}
+- (void)setActiveRefresh:(BOOL)activeRefresh{
+  if (activeRefresh) {
+    [self.refreshHeader beginRefreshing];
+  }
+}
+
+
 RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(CGRect)frame)
 RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
-static inline void RCTApplyTransformationAccordingLayoutDirection(UIView *view, UIUserInterfaceLayoutDirection layoutDirection) {
+static inline void RCTApplyTranformationAccordingLayoutDirection(UIView *view, UIUserInterfaceLayoutDirection layoutDirection) {
   view.transform =
     layoutDirection == UIUserInterfaceLayoutDirectionLeftToRight ?
       CGAffineTransformIdentity :
@@ -448,8 +474,8 @@ static inline void RCTApplyTransformationAccordingLayoutDirection(UIView *view, 
 {
   [super setReactLayoutDirection:layoutDirection];
 
-  RCTApplyTransformationAccordingLayoutDirection(_scrollView, layoutDirection);
-  RCTApplyTransformationAccordingLayoutDirection(_contentView, layoutDirection);
+  RCTApplyTranformationAccordingLayoutDirection(_scrollView, layoutDirection);
+  RCTApplyTranformationAccordingLayoutDirection(_contentView, layoutDirection);
 }
 
 - (void)setRemoveClippedSubviews:(__unused BOOL)removeClippedSubviews
@@ -468,7 +494,7 @@ static inline void RCTApplyTransformationAccordingLayoutDirection(UIView *view, 
   {
     RCTAssert(_contentView == nil, @"RCTScrollView may only contain a single subview");
     _contentView = view;
-    RCTApplyTransformationAccordingLayoutDirection(_contentView, self.reactLayoutDirection);
+    RCTApplyTranformationAccordingLayoutDirection(_contentView, self.reactLayoutDirection);
     [_scrollView addSubview:view];
   }
 }
@@ -518,7 +544,6 @@ static inline void RCTApplyTransformationAccordingLayoutDirection(UIView *view, 
 - (void)dealloc
 {
   _scrollView.delegate = nil;
-  [_eventDispatcher.bridge.uiManager.observerCoordinator removeObserver:self];
 }
 
 - (void)layoutSubviews
@@ -641,7 +666,6 @@ static inline void RCTApplyTransformationAccordingLayoutDirection(UIView *view, 
   NSString *eventName = NSStringFromSelector(@selector(_eventName)); \
   [self sendScrollEventWithName:eventName scrollView:_scrollView userData:_userData]; \
 }
-
 #define RCT_FORWARD_SCROLL_EVENT(call) \
 for (NSObject<UIScrollViewDelegate> *scrollViewListener in _scrollListeners) { \
   if ([scrollViewListener respondsToSelector:_cmd]) { \
@@ -693,6 +717,7 @@ RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
     _lastScrollDispatchTime = now;
     _allowNextScrollNoMatterWhat = NO;
   }
+
   RCT_FORWARD_SCROLL_EVENT(scrollViewDidScroll:scrollView);
 }
 
@@ -927,79 +952,6 @@ RCT_SCROLL_EVENT_HANDLER(scrollViewDidZoom, onScroll)
     _scrollView.contentSize = contentSize;
     _scrollView.contentOffset = newOffset;
   }
-}
-
-// maintainVisibleContentPosition is used to allow seamless loading of content from both ends of
-// the scrollview without the visible content jumping in position.
-- (void)setMaintainVisibleContentPosition:(NSDictionary *)maintainVisibleContentPosition
-{
-  if (maintainVisibleContentPosition != nil && _maintainVisibleContentPosition == nil) {
-    [_eventDispatcher.bridge.uiManager.observerCoordinator addObserver:self];
-  } else if (maintainVisibleContentPosition == nil && _maintainVisibleContentPosition != nil) {
-    [_eventDispatcher.bridge.uiManager.observerCoordinator removeObserver:self];
-  }
-  _maintainVisibleContentPosition = maintainVisibleContentPosition;
-}
-
-#pragma mark - RCTUIManagerObserver
-
-- (void)uiManagerWillPerformMounting:(RCTUIManager *)manager
-{
-  RCTAssertUIManagerQueue();
-  [manager prependUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-    BOOL horz = [self isHorizontal:self->_scrollView];
-    NSUInteger minIdx = [self->_maintainVisibleContentPosition[@"minIndexForVisible"] integerValue];
-    for (NSUInteger ii = minIdx; ii < self->_contentView.subviews.count; ++ii) {
-      // Find the first entirely visible view. This must be done after we update the content offset
-      // or it will tend to grab rows that were made visible by the shift in position
-      UIView *subview = self->_contentView.subviews[ii];
-      if ((horz
-           ? subview.frame.origin.x >= self->_scrollView.contentOffset.x
-           : subview.frame.origin.y >= self->_scrollView.contentOffset.y) ||
-          ii == self->_contentView.subviews.count - 1) {
-        self->_prevFirstVisibleFrame = subview.frame;
-        self->_firstVisibleView = subview;
-        break;
-      }
-    }
-  }];
-  [manager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, UIView *> *viewRegistry) {
-    if (self->_maintainVisibleContentPosition == nil) {
-      return; // The prop might have changed in the previous UIBlocks, so need to abort here.
-    }
-    NSNumber *autoscrollThreshold = self->_maintainVisibleContentPosition[@"autoscrollToTopThreshold"];
-    // TODO: detect and handle/ignore re-ordering
-    if ([self isHorizontal:self->_scrollView]) {
-      CGFloat deltaX = self->_firstVisibleView.frame.origin.x - self->_prevFirstVisibleFrame.origin.x;
-      if (ABS(deltaX) > 0.1) {
-        self->_scrollView.contentOffset = CGPointMake(
-          self->_scrollView.contentOffset.x + deltaX,
-          self->_scrollView.contentOffset.y
-        );
-        if (autoscrollThreshold != nil) {
-          // If the offset WAS within the threshold of the start, animate to the start.
-          if (self->_scrollView.contentOffset.x - deltaX <= [autoscrollThreshold integerValue]) {
-            [self scrollToOffset:CGPointMake(0, self->_scrollView.contentOffset.y) animated:YES];
-          }
-        }
-      }
-    } else {
-      CGRect newFrame = self->_firstVisibleView.frame;
-      CGFloat deltaY = newFrame.origin.y - self->_prevFirstVisibleFrame.origin.y;
-      if (ABS(deltaY) > 0.1) {
-        self->_scrollView.contentOffset = CGPointMake(
-          self->_scrollView.contentOffset.x,
-          self->_scrollView.contentOffset.y + deltaY
-        );
-        if (autoscrollThreshold != nil) {
-          // If the offset WAS within the threshold of the start, animate to the start.
-          if (self->_scrollView.contentOffset.y - deltaY <= [autoscrollThreshold integerValue]) {
-            [self scrollToOffset:CGPointMake(self->_scrollView.contentOffset.x, 0) animated:YES];
-          }
-        }
-      }
-    }
-  }];
 }
 
 // Note: setting several properties of UIScrollView has the effect of
